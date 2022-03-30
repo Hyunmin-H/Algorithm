@@ -1,4 +1,6 @@
 import sys
+sys.setrecursionlimit(10**7)
+
 
 def print_2차원배열(graph):
 
@@ -154,10 +156,9 @@ for i in range(n):
             # bfs1(i, j, graph2, count_island, graph)
             # print("graph2 2")
             # print_2차원배열(graph2)
-            # print("graph2 3")
-            # print_2차원배열(graph2)
 
-t1 = time.time()
+# print("graph2")
+# print_2차원배열(graph2)
 
 # print("time1:",  t1 - t)
 # print("graph2")
