@@ -8,20 +8,40 @@ def print_2차원배열(graph):
             print(j, end=' ')
         print()
 
-def dfs(i, j, graph, graph2, cnt):
+def dfs_EstimateSameIsland(i, j, graph, graph2, cnt):
     if i < 0 or i >= n or j < 0 or j >=n :
         return False
     elif graph2[i][j] > 0 or graph[i][j] == 0 : 
         return False
     else :
         graph2[i][j] = cnt
-        dfs(i+1, j, graph, graph2, cnt)
-        dfs(i, j+1, graph, graph2, cnt)
-        dfs(i-1, j, graph, graph2, cnt)
-        dfs(i, j-1, graph, graph2, cnt)
+        dfs_EstimateSameIsland(i+1, j, graph, graph2, cnt)
+        dfs_EstimateSameIsland(i, j+1, graph, graph2, cnt)
+        dfs_EstimateSameIsland(i-1, j, graph, graph2, cnt)
+        dfs_EstimateSameIsland(i, j-1, graph, graph2, cnt)
         return True
 
-def bfs2(graph2, min_dist, cnt):
+
+def bfs_EstimateSameIsland(i, j, graph2, cnt, graph):
+    from collections import deque
+    q = deque()
+    q.append([i, j])
+    graph2[i][j] = cnt
+
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+
+    while q:
+        x, y = q.popleft()
+        for k in range(4):
+            nx = x + dx[k]
+            ny = y + dy[k]
+            if 0 <= nx < n and 0 <= ny < n and graph2[nx][ny] == -1 and graph[nx][ny] == 1:
+                graph2[nx][ny] = cnt
+                q.append([nx, ny])
+
+
+def bfs_CalculateDistance(graph2, min_dist, cnt):
     from collections import deque
 
     dist_graph = [[0]*n for _ in range(n)]
@@ -95,25 +115,6 @@ def bfs2(graph2, min_dist, cnt):
     return min_dist
 
 
-def bfs1(i, j, graph2, cnt, graph):
-    from collections import deque
-    q = deque()
-    q.append([i, j])
-    graph2[i][j] = cnt
-
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-
-    while q:
-        x, y = q.popleft()
-        for k in range(4):
-            nx = x + dx[k]
-            ny = y + dy[k]
-            if 0 <= nx < n and 0 <= ny < n and graph2[nx][ny] == -1 and graph[nx][ny] == 1:
-                graph2[nx][ny] = cnt
-                q.append([nx, ny])
-
-
 n = int(input())
 
 graph = []
@@ -130,11 +131,11 @@ for i in range(n):
     for j in range(n):
         if graph[i][j] == 1 and graph2[i][j] ==-1:
             count_island +=1     
-            dfs(i, j, graph, graph2, count_island)
+            dfs_EstimateSameIsland(i, j, graph, graph2, count_island)
             # bfs1(i, j, graph2, count_island, graph)
 
 for i in range(1,count_island):
-    min_dist = bfs2(graph2, min_dist, i)
+    min_dist = bfs_CalculateDistance(graph2, min_dist, i)
 print(min_dist)
 
 
