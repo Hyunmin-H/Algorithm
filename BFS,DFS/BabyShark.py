@@ -95,14 +95,12 @@ def BFS(i, j, area, cnt_eat, size_baby, time):
 
     else : 
         return None, None, None, None, time
-
             
 while True: 
     i_baby, j_baby, cnt_eat, size_baby, time = BFS(i_baby, j_baby, area, cnt_eat, size_baby, time)
     # print("cnt_eat, size_baby, time :", cnt_eat, size_baby, time)
     if i_baby is None : 
         break
-
 
 print(time)  
 
