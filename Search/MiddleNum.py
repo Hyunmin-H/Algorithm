@@ -1,4 +1,4 @@
-N = int(input())
+N = int(input()) # hihi
 a = [int(input()) for _ in range(N)] 
 
 def binary_search_and_sort(a_sorted, k):
