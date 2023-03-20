@@ -49,11 +49,9 @@ def solution(m, musicinfos):
             melody = melodies_list[j % len_melodies]
             if m_list[0] == melody :
                 dp[0][j] = True
-        # for i in range(len(dp)):
-        #     dp[i][0] = False
 
         for i in range(1, len(dp)):
-            for j in range(1, len(dp[0])):
+            for j in range(len(dp[0])):
                 melody = melodies_list[j % len_melodies] 
                 if m_list[i] == melody and (dp[i-1][j-1]) : 
                     dp[i][j] = True
