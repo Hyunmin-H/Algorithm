@@ -6,6 +6,7 @@ def solution(board):
     ## 결판나지 않았는데 종료된 경우
     ##      3개 표시가 없을 경우
     ##          그러나 9개 값 모두 채워져있는 경우는 예외
+    
     def has_3samevalue():
         is_O = False
         is_X = False 
@@ -51,24 +52,13 @@ def solution(board):
     
     is_O, is_X = has_3samevalue()
     
-    print('is_O', is_O, 'is_X', is_X)
     if is_O and is_X : 
         return 0
     
     if num_O == num_X and is_O :  ## 테케 3개 실패
         return 0
     
-    if num_O - num_X == 1 and is_X :  ## 테케 3개 실패
+    if num_O - num_X == 1 and is_X :  
         return 0
-    # if not is_O and not is_X :
-    #     if num_O + num_X == 9 : 
-    #         print('heere')
-    #         return 1
-    #     else : 
-    #         print('hihi')
-    #         return 0
                 
     return 1
-    
-    
-    return answer
