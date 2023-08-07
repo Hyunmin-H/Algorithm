@@ -6,7 +6,6 @@ def print_2d(a):
 
 def solution(m, n, puddles):
     answer = 0
-    
     ans_2d = [[0 for _ in range(m)] for _ in range(n)]
     
     for j, i in puddles:
@@ -38,4 +37,4 @@ def solution(m, n, puddles):
             ans_2d[i][j] = (ans_2d[i-1][j] + ans_2d[i][j-1]) % 1000000007
                 
     
-    return ans_2d[n-1][m-1]
+    return ans_2d[n-1][m-1] 
