@@ -1,16 +1,14 @@
+import math
 N = int(input())
-classes = list(map(int, input().split()))
-B, C = map(int, input().split())
-cnt = 0
+N_student = list(map(int, input().split()))
 
-for a_i in classes:
-    res = a_i - B
-    cnt += 1
-    if res <= 0:
+A, B = map(int, input().split())
+
+answer = 0
+
+answer += len(N_student)
+for i in range(len(N_student)):
+    if N_student[i] - A <= 0 :
         continue
-    n, r = divmod(res, C)
-    cnt += n
-    if r != 0:
-        cnt += 1
-
-print(cnt)
+    answer += math.ceil((N_student[i] - A) / B)
+print(answer)
