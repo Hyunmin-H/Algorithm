@@ -1,5 +1,7 @@
 import copy
-from collections import deque
+import sys
+sys.setrecursionlimit(10**4)
+
 
 def print_2d(a):
     for i in a:
@@ -7,94 +9,70 @@ def print_2d(a):
             print(j, end=' ')
         print()
 
-def is_ice() : 
-    for i in range(N):
-        for j in range(M):
-            if area[i][j] > 0 : 
-                return True
-    return False
-
-def melt():
+def melt_ice():
     global area
-    temp_area = copy.deepcopy(area)
-    n_ice = 0
+    new_ice = copy.deepcopy(area)
 
     for i in range(N):
         for j in range(M):
-            cnt = 0
-            if area[i][j] > 0 : 
-                n_ice +=1
-                for n in range(4):
-                    ii = i + dy[n]
-                    jj = j + dx[n]
-
-                    if ii < 0 or jj < 0 or ii >= N or jj >=M:
-                        continue
-                    if area[ii][jj] == 0 : 
-                        cnt += 1
-                if area[i][j] - cnt <= 0 : 
-                    temp_area[i][j] = 0
-                    n_ice -=1
-                else : 
-                    temp_area[i][j] = area[i][j] - cnt
-    area = temp_area
-    return n_ice
-
-def count_iceisland():
-
-    def bfs(i, j):
-        
-        q = deque([[i, j]])
-
-        while q :
-            i, j = q.popleft() 
-
+            num = 0
             for n in range(4):
                 ii = i + dy[n]
                 jj = j + dx[n]
 
-                if ii < 0 or jj < 0 or ii >=N or jj >= M or v[ii][jj]:
+                if ii < 0 or jj < 0 or ii > N-1 or jj > M-1 :
                     continue
 
-                if area[ii][jj] > 0 : 
-                    q.append([ii, jj])
-                    v[ii][jj] = True
+                if area[ii][jj] == 0 :
+                    num +=1
+            new_ice[i][j] = max(0, new_ice[i][j] - num)
+    area = new_ice
+    # return new_ice
 
+def calc_iceNum():
 
-    
-    v = [[False for _ in range(M)] for _ in range(N)]
-    cnt = 0 
+    v = [[0 for _ in range(M)] for _ in range(N)]
+    num_ice = 0
+    is_ice = False
     for i in range(N):
         for j in range(M):
-            if area[i][j] > 0 and not v[i][j]:
-                bfs(i, j)
-                cnt +=1 
+            if area[i][j] > 0 and v[i][j] == 0:
+                num_ice += 1
+                dfs(i, j, v)
+                is_ice = True
     
-    return cnt
+    if not is_ice : 
+        return False
+    return num_ice
 
+def dfs(i, j, v):
+    if i < 0 or j < 0 or i > N-1 or j > M-1 or v[i][j] != 0 :
+        return
+    else :
+        v[i][j] = 1
+        for n in range(4):
+            ii = i + dy[n]
+            jj = j + dx[n]
 
+            if v[ii][jj] == 0 and area[ii][jj] > 0 :
+                dfs(ii, jj, v)
 
 N, M = map(int, input().split())
+area = [list(map(int, input().split())) for _ in range(N)]
 
-dy = [-1, 1, 0, 0]
-dx = [0, 0, -1, 1]
-
-area = []
-for i in range(N):
-    area.append(list(map(int, input().split())))
+dy = [0, 0, -1, 1]
+dx = [-1, 1, 0, 0]
 
 time = 0
-is_notseparate = True
-n_ice = 1
+while True :
+    time +=1
 
-while n_ice>0 : 
-    n_ice = melt()
-    time +=1 
-
-    if count_iceisland() >= 2 : 
-        print(time) 
-        is_notseparate = False
+    melt_ice()
+    n = calc_iceNum()
+    if n is False :
+        print(0)
+        exit()
+    if n >= 2 :
         break
 
-if is_notseparate : 
-    print(0)
+print(time )
